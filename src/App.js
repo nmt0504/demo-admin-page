@@ -4,9 +4,9 @@ import UserIcon from '@material-ui/icons/Group';
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
-import { PostList, PostEdit, PostCreate, PostShow } from './posts';
-import { UserList } from './users';
-import Dashboard from './Dashboard';
+import { PostList, PostEdit, PostCreate, PostShow } from './_components/posts';
+import { UserList } from './_components/users';
+import Dashboard from './_components/Dashboard';
 import authProvider from './authProvider';
 
 const App = () => (
