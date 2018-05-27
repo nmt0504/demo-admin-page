@@ -1,29 +1,21 @@
 import React from 'react';
-import PostIcon from '@material-ui/icons/Book';
-import UserIcon from '@material-ui/icons/Group';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { LocaleProvider } from 'antd';
+import { BrowserRouter } from 'react-router-dom';
+import { Dashboard, Header, Sidebar } from 'react-adminlte-dash';
+import { Provider } from 'react-redux';
+import { Routes } from './routes';
+import { store } from './_helpers';
 
-import { PostList, PostEdit, PostCreate, PostShow } from './_components/posts';
-import { UserList } from './_components/users';
-import Dashboard from './_components/Dashboard';
-import authProvider from './authProvider';
+import './assets/libs/font-awesome-web-fonts/css/fontawesome-all.min.css';
 
 const App = () => (
-    <Admin
-        dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}
-        authProvider={authProvider}
-        dashboard={Dashboard}
-    >
-        <Resource
-            name="posts"
-            icon={PostIcon}
-            list={PostList}
-            edit={PostEdit}
-            create={PostCreate}
-            show={PostShow}
-        />
-        <Resource name="users" icon={UserIcon} list={UserList} />
-    </Admin>
+  <LocaleProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes/>
+      </BrowserRouter>
+    </Provider>
+  </LocaleProvider>
 );
+
 export default App;
