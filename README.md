@@ -1,6 +1,6 @@
-# React-admin demo
+# React-admin
 
-## How to run
+## How to install
 
 After having cloned the react-admin repository, run the following commands:
 
@@ -9,3 +9,15 @@ npm install
 
 npm start
 ```
+
+## Use package
+
+Use some package below there
+
+
+## License
+
+License information
+
+## Requirement
+Requirement information
