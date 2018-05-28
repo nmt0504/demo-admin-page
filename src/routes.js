@@ -19,7 +19,7 @@ class Routes extends React.Component {
 
 const AuthenticatedRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
-    false ? (
+    true ? (
       <Component {...props}/>
     ) : (
       <LoginPage/>
