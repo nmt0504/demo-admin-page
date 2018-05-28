@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import HomePage from './containers/HomePage/home';
 import NotFoundPage from './containers/ErrorPage/NotFoundPage';
+import LoginPage from './containers/Authen/LoginPage'
 
 class Routes extends React.Component {
   render() {
@@ -18,15 +19,13 @@ class Routes extends React.Component {
 
 const AuthenticatedRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
-    storeList.dataSessionStore.hasLogin() ? (
+    false ? (
       <Component {...props}/>
     ) : (
-      <Redirect to={{
-        pathname: process.env.PUBLIC_URL + '/callback'
-      }}/>
+      <LoginPage/>
     )
   )}/>
-)
+);
 
 function mapStateToProps(state) {
   return {
