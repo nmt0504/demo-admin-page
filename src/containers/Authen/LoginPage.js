@@ -1,20 +1,30 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { connect } from 'react-redux';
+import { userActions } from '../../_actions/users.action';
+
 import './login.css';
 
 const FormItem = Form.Item;
 
 class LoginPage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   onFormSubmit = (e) => {
     e.preventDefault();
+    const { dispatch } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // this.setState({submitted: true});
+        dispatch(userActions.login(values));
       }
     });
   };
 
   render() {
+    const { isLoggingIn } = this.props;
     const userNameInput = this.props.form.getFieldDecorator('username', {
       rules: [
         { required: true, message: 'This field is required' },
@@ -32,6 +42,7 @@ class LoginPage extends React.Component {
     })(
       <Input
         prefix={<Icon type="lock" />}
+        type="password"
         placeholder="Password"
       />,
     );
@@ -44,7 +55,7 @@ class LoginPage extends React.Component {
     const submitButton = (
       <Button
         type="primary" htmlType="submit" className="login-form-button"
-        // loading={this.loadingLogin}
+        loading={isLoggingIn}
       >
         Login
       </Button>
@@ -70,6 +81,18 @@ class LoginPage extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  const { isLoggingIn, loggedIn, user, errorMessage } = state.authentication;
+  return {
+    user,
+    isLoggingIn,
+    loggedIn,
+    errorMessage,
+  };
+}
+
 const WrappedLoginPageWithAnt = Form.create()(LoginPage);
 
-export default WrappedLoginPageWithAnt;
+const connectedLoginPage = connect(mapStateToProps)(WrappedLoginPageWithAnt);
+
+export default connectedLoginPage;
