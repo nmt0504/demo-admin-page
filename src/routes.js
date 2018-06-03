@@ -1,7 +1,10 @@
 import React from 'react';
-import { Route, Switch} from 'react-router-dom';
+import { Router, Route, Switch, Redirect, HashRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
+import { history } from "./_helpers";
 
+// Pages
+import Nav from './components/common/Nav';
 import HomePage from './containers/HomePage/home';
 import NotFoundPage from './containers/ErrorPage/NotFoundPage';
 import LoginPage from './containers/Authen/LoginPage'
@@ -9,10 +12,18 @@ import LoginPage from './containers/Authen/LoginPage'
 class Routes extends React.Component {
   render() {
     return (
-      <Switch>
-        <AuthenticatedRoute exact path="/" component={HomePage}/>
-        <Route component={NotFoundPage} />
-      </Switch>
+      <Router history={history}>
+	      <HashRouter>
+		      <Switch>
+			      <Route exact path="/login" component={LoginPage}/>
+			      {/*<Route component={NotFoundPage} />*/}
+			      <Nav>
+				      <Route exact path="/" render={() => <Redirect to="/home"/> }/>
+				      <AuthenticatedRoute exact path="/" component={HomePage}/>
+			      </Nav>
+		      </Switch>
+	      </HashRouter>
+      </Router>
     );
   }
 }
@@ -22,7 +33,7 @@ const AuthenticatedRoute = ({ component: Component, ...rest }) => (
     false ? (
       <Component {...props}/>
     ) : (
-      <LoginPage/>
+	    <Redirect to="/login"/>
     )
   )}/>
 );
