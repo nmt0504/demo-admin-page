@@ -15,11 +15,20 @@ function register(user) {
 }
 
 function login(user) {
-  return axios.post(config.API_SERVER + '/auth/login', {
-    phone: user.username,
-    password: user.password
+  const params = {
+	  username: user.username,
+	  password: user.password
+  };
+  return axios({
+	  method: 'post',
+	  url: config.API_SERVER + '/auth/login',
+	  data: params,
+	  contentType: 'application/json',
   })
-    .then(handleResponse)
+    .then(resp => resp.data)
+	  .catch(error => {
+	  	return Promise.reject(error.response.data);
+	  })
 }
 
 function changePassword(user, newPassword, confirmPassword) {
@@ -32,8 +41,8 @@ function changePassword(user, newPassword, confirmPassword) {
 }
 
 function handleResponse(resp) {
-  if (resp.code == 200) {
-    return resp;
+  if (resp.status === 200) {
+    return resp.data.data;
   }
   return Promise.reject(resp.message);
 }

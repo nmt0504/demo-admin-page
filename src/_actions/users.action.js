@@ -1,7 +1,8 @@
 import { userConstants } from "../_constants";
 import { userService } from '../_services';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 // import { alertActions } from './';
-import { history } from '../_helpers';
 
 function register(user) {
   return dispatch => {
@@ -24,26 +25,34 @@ function register(user) {
 
 function login(user) {
   return dispatch => {
-    dispatch(request(user));
-    userService.login(user)
-      .then(
-        user => {
-          dispatch(success(user));
-          if (user && user.token) {
+    dispatch(request());
+    return userService.login(user)
+      .then(resp => {
+        const data = {
+          user: user,
+          response: resp,
+        };
+        if(resp.code === 200) {
+          dispatch(success(data));
+          if (resp && resp.data) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('token', JSON.stringify(resp.data.token));
           }
-          return user;
-        },
-        error => {
-          dispatch(failure(error));
+        } else {
+	        dispatch(failure());
         }
-      );
+	      return data;
+      })
+      .catch(error => {
+	      dispatch(failure(error));
+	      return Promise.reject(error);
+      });
   };
 
-  function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
-  function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
-  function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+  function request() { return { type: userConstants.LOGIN_REQUEST } }
+  function success(data) { return { type: userConstants.LOGIN_SUCCESS, data } }
+  function failure() { return { type: userConstants.LOGIN_FAILURE } }
 }
 
 function changePassword(user, newPassword, confirmPassword) {

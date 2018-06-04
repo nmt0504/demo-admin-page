@@ -19,7 +19,7 @@ class Routes extends React.Component {
 			      {/*<Route component={NotFoundPage} />*/}
 			      <Nav>
 				      <Route exact path="/" render={() => <Redirect to="/home"/> }/>
-				      <AuthenticatedRoute exact path="/" component={HomePage}/>
+				      <AuthenticatedRoute exact path="/home" component={HomePage}/>
 			      </Nav>
 		      </Switch>
 	      </HashRouter>
@@ -30,7 +30,7 @@ class Routes extends React.Component {
 
 const AuthenticatedRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
-    false ? (
+    localStorage.getItem('token') ? (
       <Component {...props}/>
     ) : (
 	    <Redirect to="/login"/>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { userActions } from '../../_actions/users.action';
 
 import './login.css';
@@ -14,20 +15,30 @@ class LoginPage extends React.Component {
 
   onFormSubmit = (e) => {
     e.preventDefault();
-    const { dispatch } = this.props;
+    const self = this;
+    // const { dispatch } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
         // this.setState({submitted: true});
-        dispatch(userActions.login(values));
+        // dispatch(userActions.login(values));
+        this.props.login(values)
+          .then(data => {
+	          message.success('Welcome ' + data.user.username);
+	          self.props.history.replace('/');
+          })
+          .catch(error => {
+            message.error(error.msg);
+          })
       }
     });
   };
 
   render() {
-    const { isLoggingIn } = this.props;
+    const { loggingIn } = this.props;
     const userNameInput = this.props.form.getFieldDecorator('username', {
       rules: [
         { required: true, message: 'This field is required' },
+	      { min: 4, message: 'This field must be at least 4 characters' },
       ],
     })(
       <Input
@@ -38,6 +49,7 @@ class LoginPage extends React.Component {
     const passwordInput = this.props.form.getFieldDecorator('password', {
       rules: [
         { required: true, message: 'This field is required' },
+        { min: 4, message: 'This field must be at least 4 characters' },
       ],
     })(
       <Input
@@ -55,7 +67,7 @@ class LoginPage extends React.Component {
     const submitButton = (
       <Button
         type="primary" htmlType="submit" className="login-form-button"
-        loading={isLoggingIn}
+        loading={loggingIn}
       >
         Login
       </Button>
@@ -82,17 +94,20 @@ class LoginPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { isLoggingIn, loggedIn, user, errorMessage } = state.authentication;
+  const { loggingIn } = state.authentication;
   return {
-    user,
-    isLoggingIn,
-    loggedIn,
-    errorMessage,
+	  loggingIn
   };
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		login: bindActionCreators(userActions.login, dispatch)
+	}
 }
 
 const WrappedLoginPageWithAnt = Form.create()(LoginPage);
 
-const connectedLoginPage = connect(mapStateToProps)(WrappedLoginPageWithAnt);
+const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(WrappedLoginPageWithAnt);
 
 export default connectedLoginPage;
