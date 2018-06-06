@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from './Header';
 import SideBar from './SideBar';
+import Footer from './Footer';
 import { userActions } from "../../_actions/users.action";
 import { Dashboard } from 'react-adminlte-dash';
 import {connect} from "react-redux";
@@ -29,7 +30,8 @@ class Nav extends Component {
 			<div id="wrapper">
 				<Dashboard
 					navbarChildren={Header(this.onLogOut)}
-					sidebarChildren={SideBar()}
+					sidebarChildren={SideBar(this.props.location.pathname)}
+					footerChildren={Footer()}
 					logoLg={logoLg()}
 					logoSm={logoSm()}
 					theme="skin-blue"

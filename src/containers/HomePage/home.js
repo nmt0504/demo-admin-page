@@ -1,11 +1,10 @@
 import React from 'react';
-import { Dashboard, Header, Sidebar } from 'react-adminlte-dash';
 
 class HomePage extends React.Component {
   render() {
     return (
       <div>
-        test
+        <h2 style={{ textAlign: 'center'}}>Welcome to my admin page</h2>
       </div>
     );
   }

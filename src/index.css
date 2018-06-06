@@ -6,6 +6,19 @@ body {
   font-family: sans-serif;
 }
 
-#app {
+#wrapper {
     min-height: 100vh;
+}
+
+#wrapper footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    text-align: right;
+}
+
+.Sdzae {
+    z-index: 900 !important;
 }
