@@ -1,38 +1,39 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Dashboard, Header, Sidebar } from 'react-adminlte-dash'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Header from './Header';
+import SideBar from './SideBar';
+import { userActions } from "../../_actions/users.action";
+import { Dashboard } from 'react-adminlte-dash';
+import {connect} from "react-redux";
 
-const user = JSON.parse(localStorage.getItem('user'));
+const logoLg = () => (
+	<span><b>AdminDashboard</b></span>
+);
 
-const a = () => {};
-const b = () => {};
-
-const nav = () => ([
-	<Header.Item href="/some/link" key="1" />,
-	<Header.UserMenu key="2" name={user.username} profileAction={a} signOutAction={b}/>
-]);
-
-const sb = () => ([
-	<Sidebar.Menu header="NAVIGATION" key="1">
-		<Sidebar.Menu.Item
-			title="Staff"
-			href="#/staff"
-		/>
-		<Sidebar.Menu.Item
-			title="Categories"
-			href="#/categories"
-		/>
-	</Sidebar.Menu>
-]);
+const logoSm = () => (
+	<span><b>ADB</b></span>
+);
 
 class Nav extends Component {
+	constructor(props) {
+		super(props);
+	}
+
+	onLogOut = () => {
+		const { dispatch } = this.props;
+		dispatch(userActions.logout());
+	};
+
 	render() {
 		return (
 			<div id="wrapper">
 				<Dashboard
-					navbarChildren={nav()}
-					sidebarChildren={sb()}
+					navbarChildren={Header(this.onLogOut)}
+					sidebarChildren={SideBar()}
+					logoLg={logoLg()}
+					logoSm={logoSm()}
 					theme="skin-blue"
+					sidebarMini
 				>
 					{this.props.children}
 				</Dashboard>
@@ -49,4 +50,13 @@ Nav.propTypes = {
 	children: PropTypes.node
 };
 
-export default Nav;
+function mapStateToProps(state) {
+	const { user } = state.authentication;
+	return {
+		user
+	};
+}
+
+const connectedNav = connect(mapStateToProps)(Nav);
+
+export default connectedNav;

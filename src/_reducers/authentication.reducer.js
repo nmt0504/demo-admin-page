@@ -1,9 +1,9 @@
 import { userConstants } from '../_constants';
 
 let token = JSON.parse(localStorage.getItem('token'));
-let user = JSON.parse(localStorage.getItem('user'));
+let username = JSON.parse(localStorage.getItem('username'));
 const initialState = {
-	user: user ? user : null,
+	username: username ? username : null,
   token: token ? token : null,
 	loggingIn: false,
 	loggingOut: false,
@@ -15,7 +15,7 @@ export function authentication(state = initialState, action) {
     case userConstants.LOGIN_REQUEST:
 	    return Object.assign({}, initialState, {loggingIn: true});
     case userConstants.LOGIN_SUCCESS:
-	    return Object.assign({}, state, {user: user, loggingIn: false, loginErrors: null});
+	    return Object.assign({}, state, {username: username, loggingIn: false, loginErrors: null});
     case userConstants.LOGIN_FAILURE:
 	    return {
 		    ...state,

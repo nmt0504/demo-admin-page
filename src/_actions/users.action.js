@@ -36,7 +36,7 @@ function login(user) {
           dispatch(success(data));
           if (resp && resp.data) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('username', user.username);
             localStorage.setItem('token', JSON.stringify(resp.data.token));
           }
         } else {
@@ -74,10 +74,19 @@ function changePassword(user, newPassword, confirmPassword) {
   function failure(error) { return { type: userConstants.EDIT_PASSWORD_FAILURE, error } }
 }
 
-//login,
-//logout,
+function logout() {
+  return dispatch => {
+  	dispatch(request());
+	  localStorage.clear();
+  };
+
+  function request() { return { type: userConstants.LOGOUT } }
+}
+
+
 export const userActions = {
   register,
   login,
-  changePassword
+  changePassword,
+	logout,
 };

@@ -19,7 +19,6 @@ class LoginPage extends React.Component {
     // const { dispatch } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // this.setState({submitted: true});
         // dispatch(userActions.login(values));
         this.props.login(values)
           .then(data => {
