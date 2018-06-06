@@ -83,7 +83,7 @@ class LoginPage extends React.Component {
             <FormItem>{passwordInput}</FormItem>
             <FormItem>
               {rememberMeInput}
-              <a className="login-form-forgot" href="">Forgot password</a>
+              {/*<a className="login-form-forgot" href="">Forgot password</a>*/}
               {submitButton}
               </FormItem>
           </Form>

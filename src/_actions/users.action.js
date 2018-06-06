@@ -1,7 +1,7 @@
 import { userConstants } from "../_constants";
 import { userService } from '../_services';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 // import { alertActions } from './';
 
 function register(user) {
